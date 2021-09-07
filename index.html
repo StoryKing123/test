@@ -98,7 +98,8 @@
                         console.log('支付回调', res);
                     },
                     res => {
-                        console.log('支付回调', res);
+                        console.error('支付回调', res);
+                        console.error(res.data);
                     }
                 );
             };
