@@ -10,8 +10,8 @@
         调试页面
         <button onclick="pay()">支付</button>
         <button onclick="login()">登录</button>
-        <!-- <script src="./mini-game.min.js"></script> -->
-        <!-- <script src="./sdk.js" type="module"></script> -->
+        <script src="./mini-game.min.js"></script>
+        <script src="./sdk.js" type="module"></script>
         <script src="./md5.js" type="module"></script>
         <script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script>
         <script>
@@ -71,13 +71,36 @@
             // };
             window.login = () => {
                 _mnSdk.miniLogin(res => {
-                  console.log('succ');
+                    console.log('succ');
                     console.log(res);
                 });
             };
 
             const pay = () => {
-                _mnSdk.miniBuy();
+                _mnSdk.miniBuy()
+                _mnSdk.miniBuy(
+                    {
+                        game_role_id: '121',
+                        game_role_name: '刺客',
+                        game_role_level: '12',
+                        server_id: '1',
+                        server_name: '剑仙8服',
+                        goods_id: '46719',
+                        goods_name: '充值卡',
+                        trade_sn: new Date().getTime(),
+                        amount: 1,
+                        callback_url: 'zeus.test.com/v1/payment/order',
+                        zone_id: '-1',
+                        zone_name: '-1',
+                        product_count: '',
+                    },
+                    res => {
+                        console.log('支付回调', res);
+                    },
+                    res => {
+                        console.log('支付回调', res);
+                    }
+                );
             };
         </script>
     </body>

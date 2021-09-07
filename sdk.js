@@ -304,20 +304,51 @@ class mnSdk {
     }
 
     miniBuy(obj, callback, logoutCallback) {
+        let game_config = this.getStorage('game_config');
         let _this = this;
-        if (_this.isQQ) {
-            qq.checkSession({
-                success() {
-                    _this.sendOrder(obj, callback);
-                },
-                fail() {
+        const handleTencentVideoPlatFormMiniBuy = () => {
+            window.bridgeHelper
+                .isLogin()
+                .then(res => {
+                    if (res.result.isLogin) {
+                        _this.sendOrder(obj, callback);
+                    } else {
+                        logoutCallback();
+                    }
+                })
+                .catch(err => {
+                    let errInfo = {
+                        ret: 0,
+                        data: err,
+                    };
                     callback && callback(errInfo);
                     logoutCallback();
-                },
-            });
-        } else {
-            _this.sendOrder(obj, callback);
-        }
+                });
+        };
+        const handleUndefinedPlatFormMiniBuy = () => {
+            if (_this.isQQ) {
+                qq.checkSession({
+                    success() {
+                        _this.sendOrder(obj, callback);
+                    },
+                    fail(err) {
+                        let errInfo = {
+                            ret: 0,
+                            data: err,
+                        };
+                        callback && callback(errInfo);
+                        logoutCallback();
+                    },
+                });
+            } else {
+                _this.sendOrder(obj, callback);
+            }
+        };
+        const platFormMiniBuyMap = {
+            [TYPE_TENCENT_VIDEO]: handleTencentVideoPlatFormMiniBuy,
+            [TYPE_UNDEFINED]: handleUndefinedPlatFormMiniBuy,
+        };
+        platFormMiniBuyMap[game_config.platform_type]();
     }
 
     sendOrder(obj, callback) {
@@ -354,11 +385,21 @@ class mnSdk {
             success(res) {
                 let { ret, content } = res;
                 if (ret === 1) {
-                    if (_this.isQQ) {
+                    const handleTencentVideoPlatFormSendOrderCallback = () => {
                         _this.sendChannelOrder(content, obj, callback);
-                    } else {
-                        _this.miniPay(content, obj, callback);
-                    }
+                    };
+                    const handleUndefinedPlatFormSendOrderCallback = () => {
+                        if (_this.isQQ) {
+                            _this.sendChannelOrder(content, obj, callback);
+                        } else {
+                            _this.miniPay(content, obj, callback);
+                        }
+                    };
+                    const platFormSendOrderMap = {
+                        [TYPE_TENCENT_VIDEO]: handleTencentVideoPlatFormSendOrderCallback,
+                        [TYPE_UNDEFINED]: handleUndefinedPlatFormSendOrderCallback,
+                    };
+                    platFormSendOrderMap[game_config.platform_type]();
                 } else {
                     let errInfo = {
                         ret: 0,
@@ -432,14 +473,17 @@ class mnSdk {
     }
 
     miniPay(content, obj, callback) {
-        if (this.isQQ) {
-            //setEnv ---- 0:米大师正式环境 ,1:米大师沙箱环境
-            //回调错误码 ---- 0：消耗成功，-1：系统错误，-2：用户取消支付，-3：米大师充值失败，-4：米大师消耗失败，-1000：参数错误
-            let midas_config = {
-                prepayId: content.channel_trade_sn,
-                starCurrency: obj.amount / 10,
-                setEnv: 0,
-                success: function (res) {
+        const handleTencentVideoPlatFormMiniPay = () => {
+            bridgeHelper
+                .SingleCashier({
+                    items: `${obj.goods_id}:${obj.amount}`,
+                    remark: '', // 透传后端返回的 pay_remark 字段即可
+                    title: '6元限时礼包',
+                    desc: '6元限时礼包',
+                    itemName: '6元限时礼包',
+                })
+                .then(res => {
+                    console.log(res);
                     let resInfo = {
                         ret: 1,
                         data: {
@@ -447,24 +491,54 @@ class mnSdk {
                         },
                     };
                     callback && callback(resInfo);
-                },
-                fail: function (err) {
+                })
+                .catch(err => {
                     let errInfo = {
                         ret: 0,
                         data: err,
                     };
                     callback && callback(errInfo);
-                },
-            };
-            console.log(midas_config);
-            qq.requestMidasPayment(midas_config);
-        } else {
-            sdk.pay({
-                pid: obj.goods_id,
-                txid: content.order_sn,
-                product_count: obj.product_count || '',
-            });
-        }
+                });
+        };
+        const handleUndefinedPlatFormMiniPay = () => {
+            if (this.isQQ) {
+                //setEnv ---- 0:米大师正式环境 ,1:米大师沙箱环境
+                //回调错误码 ---- 0：消耗成功，-1：系统错误，-2：用户取消支付，-3：米大师充值失败，-4：米大师消耗失败，-1000：参数错误
+                let midas_config = {
+                    prepayId: content.channel_trade_sn,
+                    starCurrency: obj.amount / 10,
+                    setEnv: 0,
+                    success: function (res) {
+                        let resInfo = {
+                            ret: 1,
+                            data: {
+                                code: res,
+                            },
+                        };
+                        callback && callback(resInfo);
+                    },
+                    fail: function (err) {
+                        let errInfo = {
+                            ret: 0,
+                            data: err,
+                        };
+                        callback && callback(errInfo);
+                    },
+                };
+                console.log(midas_config);
+                qq.requestMidasPayment(midas_config);
+            } else {
+                sdk.pay({
+                    pid: obj.goods_id,
+                    txid: content.order_sn,
+                    product_count: obj.product_count || '',
+                });
+            }
+        };
+        const platFormMiniPayMap = {
+            [TYPE_TENCENT_VIDEO]: handleTencentVideoPlatFormMiniPay,
+            [TYPE_UNDEFINED]: handleUndefinedPlatFormMiniPay,
+        };
     }
 
     miniShare(items, callback) {
