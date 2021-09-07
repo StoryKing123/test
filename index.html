@@ -1,1 +1,83 @@
-12321321
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        调试页面
+        <button onclick="pay()">支付</button>
+        <button onclick="login()">登录</button>
+        <!-- <script src="./mini-game.min.js"></script> -->
+        <!-- <script src="./sdk.js" type="module"></script> -->
+        <script src="./md5.js" type="module"></script>
+        <script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script>
+        <script>
+            // VConsole will be exported to `window.VConsole` by default.
+            var vConsole = new window.VConsole();
+        </script>
+        <script type="module">
+            import _mnSdk from './sdk.js';
+            // import md5 from "./md5.js";
+            const gameConfig = {
+                channel_id: '228',
+                game_channel_id: '5017',
+                game_id: '89',
+                game_name: '火源战纪',
+                game_ver: '1.0',
+                platform_type: 'tencentvideo',
+            };
+            _mnSdk.miniInit(gameConfig);
+
+            // const dlLogin = res => {
+            //     if (res.ret === 1) {
+            //         let login_data = {
+            //             game_name: '火源战纪',
+            //             uid: '',
+            //             game_ver: '1.15.9',
+            //             session_id: res.data.token,
+            //             channel_id: '225',
+            //             game_channel_id: '5017',
+            //             game_id: '89',
+            //         };
+            //         let signStr =
+            //             _mnSdk.createSign(login_data) + 'a07e73bd115cd39936765e5eddfe0ce6';
+            //         login_data['sign'] = md5(signStr);
+            //         _mnSdk.request({
+            //             method: 'POST',
+            //             // url: 'https://zeus.aidalan.com/v1/login/token',
+            //             url: 'http://zeustest.aidalan.com/v1/login/token',
+            //             data: login_data,
+            //             success(res) {
+            //                 _mnSdk.miniLoginRsp(res.content);
+            //             },
+            //             fail(err) {
+            //                 console.log(err);
+            //             },
+            //         });
+            //     }
+            // };
+
+            // _mnSdk.miniLogin(res => {
+            //     console.log(res);
+            //     dlLogin(res);
+            // });
+
+            //       _mnSdk.miniBuy()
+            // const login = () => {
+
+            // };
+            window.login = () => {
+                _mnSdk.miniLogin(res => {
+                    console.log(res);
+                });
+            };
+
+            const pay = () => {
+                _mnSdk.miniBuy();
+            };
+        </script>
+    </body>
+</html>
