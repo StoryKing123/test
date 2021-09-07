@@ -225,11 +225,18 @@ class mnSdk {
                     timeout: 10000, // 10s超时
                 })
                 .then(res => {
-                    // console.log('succ');
                     window.bridgeHelper.getAuthCode({ appid: 'tiv64yv4308upa0urv' }).then(res => {
-                        console.log(res);
+                        // console.log(res);
+
+                        let resInfo = {
+                            ret: 1,
+                            data: {
+                                code: res.result.code,
+                            },
+                        };
+                        callback && callback(resInfo);
                     });
-                    console.log(res);
+                    // console.log(res);
                 })
                 .catch(err => {
                     console.error(err);
