@@ -41,7 +41,7 @@ class mnSdk {
             game_id: game_config.game_id,
             channel_id: game_config.channel_id,
             game_channel_id: game_config.game_channel_id,
-            type:
+            platform_type:
                 typeof game_config.platform_type === 'string'
                     ? game_config.platform_type.toLowerCase()
                     : undefined,
@@ -64,7 +64,7 @@ class mnSdk {
             [TYPE_TENCENT_VIDEO]: handleTencentVideoPlatformInit,
             [TYPE_UNDEFINED]: handleUndefinedPlatformInit,
         };
-        platformInitMap[init_config.type]();
+        platformInitMap[init_config.platform_type]();
     }
 
     getPubData() {
@@ -220,12 +220,15 @@ class mnSdk {
     miniLogin(callback) {
         let game_config = this.getStorage('game_config');
         const handleTencentVideoPlatformLogin = () => {
-            bridgeHelper
+            window.bridgeHelper
                 .login('qq', {
                     timeout: 10000, // 10s超时
                 })
                 .then(res => {
                     console.log(res);
+                })
+                .catch(err => {
+                    console.error(err);
                 }); // 登录qq
         };
         const handleUndefinedPlatformLogin = () => {
@@ -278,6 +281,7 @@ class mnSdk {
             [TYPE_TENCENT_VIDEO]: handleTencentVideoPlatformLogin,
             [TYPE_UNDEFINED]: handleUndefinedPlatformLogin,
         };
+        console.log(game_config);
         platFormLoginMap[game_config.platform_type]();
     }
 
