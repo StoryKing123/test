@@ -96,9 +96,10 @@
                     },
                     res => {
                         console.log('支付回调', res);
+                        console.log(res.data);
                     },
                     res => {
-                        console.error('支付回调', res);
+                        console.error('支付错误回调', res);
                         console.error(res.data);
                     }
                 );
