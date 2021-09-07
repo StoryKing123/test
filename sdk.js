@@ -304,12 +304,16 @@ class mnSdk {
     }
 
     miniBuy(obj, callback, logoutCallback) {
+        console.log(1);
         let game_config = this.getStorage('game_config');
         let _this = this;
         const handleTencentVideoPlatFormMiniBuy = () => {
+            console.log(2);
             window.bridgeHelper
                 .isLogin()
                 .then(res => {
+                    console.log(res);
+                    console.log(3);
                     if (res.result.isLogin) {
                         _this.sendOrder(obj, callback);
                     } else {
@@ -372,6 +376,7 @@ class mnSdk {
             extra_data: obj.extra_data,
             callback_url: obj.callback_url,
         };
+        console.log(4);
         public_data.verify = order_data;
 
         let signStr = _this.createSign(public_data) + _this.game_key;
@@ -383,6 +388,8 @@ class mnSdk {
             url: send_order_api,
             data: public_data,
             success(res) {
+                console.log(5);
+
                 let { ret, content } = res;
                 if (ret === 1) {
                     const handleTencentVideoPlatFormSendOrderCallback = () => {
