@@ -304,22 +304,23 @@ class mnSdk {
     }
 
     miniBuy(obj, callback, logoutCallback) {
-        console.log(1);
         let game_config = this.getStorage('game_config');
         let _this = this;
         const handleTencentVideoPlatFormMiniBuy = () => {
-            console.log(2);
             window.bridgeHelper
                 .isLogin()
                 .then(res => {
                     console.log(res);
-                    console.log(3);
+                    console.log(2);
                     if (res.result.isLogin) {
+                        console.log(3);
                         _this.sendOrder(obj, callback);
                     } else {
                         logoutCallback();
                     }
                 })
+
+                
                 .catch(err => {
                     let errInfo = {
                         ret: 0,
