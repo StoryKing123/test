@@ -10,6 +10,7 @@
         调试页面
         <button onclick="pay()">支付</button>
         <button onclick="login()">登录</button>
+        <button onClick="secondLogin()">二次登录</button>
         <div>12</div>
         <script src="./mini-game.min.js"></script>
         <script src="./sdk.js" type="module"></script>
@@ -21,7 +22,7 @@
         </script>
         <script type="module">
             import _mnSdk from './sdk.js';
-            import md5 from "./md5.js";
+            import md5 from './md5.js';
             const gameConfig = {
                 channel_id: '228',
                 game_channel_id: '5017',
@@ -61,15 +62,16 @@
                 }
             };
 
-            _mnSdk.miniLogin(res => {
-                console.log(res);
-                dlLogin(res);
-            });
-
             //       _mnSdk.miniBuy()
             // const login = () => {
 
             // };
+            window.secondLogin = () => {
+                _mnSdk.miniLogin(res => {
+                    console.log(res);
+                    dlLogin(res);
+                });
+            };
             window.login = () => {
                 _mnSdk.miniLogin(res => {
                     console.log('succ');
