@@ -27,7 +27,7 @@ class mnSdk {
     constructor() {
         // this.domain = 'https://zeus.aidalan.com';
         this.game_key = 'd992f6ba1e4861278628b50ae8ae0b67';
-        this.domain = "http://zeustest.aidalan.com";
+        this.domain = "https://zeustest.aidalan.com";
         this.order_api = '/v1/payment/order';
         this.channel_order_api = '/v1/payment/channelOrder';
         this.isQQ = typeof qq !== 'undefined' && typeof qq.showToast === 'function';
