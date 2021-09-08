@@ -21,7 +21,7 @@
         </script>
         <script type="module">
             import _mnSdk from './sdk.js';
-            // import md5 from "./md5.js";
+            import md5 from "./md5.js";
             const gameConfig = {
                 channel_id: '228',
                 game_channel_id: '5017',
@@ -32,39 +32,39 @@
             };
             _mnSdk.miniInit(gameConfig);
 
-            // const dlLogin = res => {
-            //     if (res.ret === 1) {
-            //         let login_data = {
-            //             game_name: '火源战纪',
-            //             uid: '',
-            //             game_ver: '1.15.9',
-            //             session_id: res.data.token,
-            //             channel_id: '225',
-            //             game_channel_id: '5017',
-            //             game_id: '89',
-            //         };
-            //         let signStr =
-            //             _mnSdk.createSign(login_data) + 'a07e73bd115cd39936765e5eddfe0ce6';
-            //         login_data['sign'] = md5(signStr);
-            //         _mnSdk.request({
-            //             method: 'POST',
-            //             // url: 'https://zeus.aidalan.com/v1/login/token',
-            //             url: 'http://zeustest.aidalan.com/v1/login/token',
-            //             data: login_data,
-            //             success(res) {
-            //                 _mnSdk.miniLoginRsp(res.content);
-            //             },
-            //             fail(err) {
-            //                 console.log(err);
-            //             },
-            //         });
-            //     }
-            // };
+            const dlLogin = res => {
+                if (res.ret === 1) {
+                    let login_data = {
+                        game_name: '火源战纪',
+                        uid: '',
+                        game_ver: '1.15.9',
+                        session_id: res.data.token,
+                        channel_id: '225',
+                        game_channel_id: '5017',
+                        game_id: '89',
+                    };
+                    let signStr =
+                        _mnSdk.createSign(login_data) + 'a07e73bd115cd39936765e5eddfe0ce6';
+                    login_data['sign'] = md5(signStr);
+                    _mnSdk.request({
+                        method: 'POST',
+                        // url: 'https://zeus.aidalan.com/v1/login/token',
+                        url: 'http://zeustest.aidalan.com/v1/login/token',
+                        data: login_data,
+                        success(res) {
+                            _mnSdk.miniLoginRsp(res.content);
+                        },
+                        fail(err) {
+                            console.log(err);
+                        },
+                    });
+                }
+            };
 
-            // _mnSdk.miniLogin(res => {
-            //     console.log(res);
-            //     dlLogin(res);
-            // });
+            _mnSdk.miniLogin(res => {
+                console.log(res);
+                dlLogin(res);
+            });
 
             //       _mnSdk.miniBuy()
             // const login = () => {
@@ -78,7 +78,7 @@
             };
 
             window.pay = () => {
-                _mnSdk.miniBuy()
+                _mnSdk.miniBuy();
                 _mnSdk.miniBuy(
                     {
                         game_role_id: '121',

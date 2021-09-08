@@ -223,5 +223,6 @@ function md5(string) {
 
 window.md5 = md5;
 export { md5 };
+export default md5;
 // export const md5
 // module.exports.md5 = md5
