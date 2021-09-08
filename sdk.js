@@ -381,27 +381,22 @@ class mnSdk {
         console.log(game_config);
         console.log(public_data);
         console.log('------');
-        try {
-            let order_data = {
-                user_id: login_rsp.user_id || '',
-                game_role_id: obj.game_role_id,
-                game_role_name: obj.game_role_name,
-                game_role_level: obj.game_role_level,
-                server_id: obj.server_id,
-                server_name: obj.server_name,
-                zone_id: obj.zone_id,
-                zone_name: obj.zone_name,
-                goods_id: obj.goods_id,
-                goods_name: obj.goods_name,
-                trade_sn: obj.trade_sn,
-                amount: obj.amount,
-                extra_data: obj.extra_data,
-                callback_url: obj.callback_url,
-            };
-        } catch (error) {
-            console.log(error);
-        }
-
+        let order_data = {
+            user_id: login_rsp.user_id || '',
+            game_role_id: obj.game_role_id,
+            game_role_name: obj.game_role_name,
+            game_role_level: obj.game_role_level,
+            server_id: obj.server_id,
+            server_name: obj.server_name,
+            zone_id: obj.zone_id,
+            zone_name: obj.zone_name,
+            goods_id: obj.goods_id,
+            goods_name: obj.goods_name,
+            trade_sn: obj.trade_sn,
+            amount: obj.amount,
+            extra_data: obj.extra_data,
+            callback_url: obj.callback_url,
+        };
         console.log('order_data');
         console.log(order_data);
         console.log(4);
