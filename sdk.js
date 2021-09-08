@@ -311,9 +311,7 @@ class mnSdk {
                 .isLogin()
                 .then(res => {
                     console.log(res);
-                    console.log(2);
                     if (res.result.isLogin) {
-                        console.log(3);
                         _this.sendOrder(obj, callback);
                     } else {
                         logoutCallback();
@@ -357,10 +355,13 @@ class mnSdk {
     }
 
     sendOrder(obj, callback) {
+        console.log(1);
         let _this = this;
         let public_data = _this.getPubData();
+        console.log(2);
         let login_rsp = _this.getStorage('login_rsp');
         let game_config = _this.getStorage('game_config');
+        console.log(3);
         let order_data = {
             user_id: login_rsp.user_id || '',
             game_role_id: obj.game_role_id,
