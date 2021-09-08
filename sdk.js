@@ -369,18 +369,10 @@ class mnSdk {
     }
 
     sendOrder(obj, callback) {
-        console.log(1);
         let _this = this;
         let public_data = _this.getPubData();
-        console.log(2);
         let login_rsp = _this.getStorage('login_rsp');
         let game_config = _this.getStorage('game_config');
-        console.log(3);
-        console.log('------');
-        console.log(login_rsp);
-        console.log(game_config);
-        console.log(public_data);
-        console.log('------');
         let order_data = {
             user_id: login_rsp.user_id || '',
             game_role_id: obj.game_role_id,
@@ -397,22 +389,18 @@ class mnSdk {
             extra_data: obj.extra_data,
             callback_url: obj.callback_url,
         };
-        console.log('order_data');
-        console.log(order_data);
-        console.log(4);
         public_data.verify = order_data;
 
         let signStr = _this.createSign(public_data) + _this.game_key;
         public_data['sign'] = md5(signStr);
         let send_order_api = _this.domain + _this.order_api;
 
+        console.log(public_data);
         _this.request({
             method: 'POST',
             url: send_order_api,
             data: public_data,
             success(res) {
-                console.log(5);
-
                 let { ret, content } = res;
                 if (ret === 1) {
                     const handleTencentVideoPlatFormSendOrderCallback = () => {
