@@ -21,31 +21,6 @@
             var vConsole = new window.VConsole();
         </script>
         <script type="module">
-            // fetch();
-
-            let login_data = {
-                game_name: '火源战纪',
-                uid: '',
-                game_ver: '1.15.9',
-                session_id: '12312312312',
-                channel_id: '225',
-                game_channel_id: '5017',
-                game_id: '89',
-            };
-            let signStr = _mnSdk.createSign(login_data) + 'a07e73bd115cd39936765e5eddfe0ce6';
-            login_data['sign'] = md5(signStr);
-            _mnSdk.request({
-                method: 'POST',
-                // url: 'https://zeus.aidalan.com/v1/login/token',
-                url: 'https://zeustest.aidalan.com/v1/login/token',
-                data: login_data,
-                success(res) {
-                    _mnSdk.miniLoginRsp(res.content);
-                },
-                fail(err) {
-                    console.log(err);
-                },
-            });
             import _mnSdk from './sdk.js';
             import md5 from './md5.js';
             const gameConfig = {
@@ -63,9 +38,9 @@
                     let login_data = {
                         game_name: '火源战纪',
                         uid: '',
-                        game_ver: '1.15.9',
-                        session_id: res.data.token,
-                        channel_id: '225',
+                        game_ver: '1.0',
+                        session_id: res.data.code,
+                        channel_id: '228',
                         game_channel_id: '5017',
                         game_id: '89',
                     };
@@ -75,7 +50,7 @@
                     _mnSdk.request({
                         method: 'POST',
                         // url: 'https://zeus.aidalan.com/v1/login/token',
-                        url: 'http://zeustest.aidalan.com/v1/login/token',
+                        url: 'https://zeustest.aidalan.com/v1/login/token',
                         data: login_data,
                         success(res) {
                             _mnSdk.miniLoginRsp(res.content);
