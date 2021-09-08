@@ -3,7 +3,7 @@ import { md5 } from './md5.js';
 const TYPE_TENCENT_VIDEO = 'tencentvideo';
 const TYPE_UNDEFINED = undefined;
 //加载script标签
-function loadScript(src) {
+function loadScript(src, callback) {
     var newScript = document.createElement('script');
     newScript.type = 'text/javascript';
     newScript.src = src;
@@ -18,6 +18,7 @@ function loadScript(src) {
             // 应用的appid，用于统计日志流水区分不同的应用
             appid: 'tiv64yv4308upa0urv',
         });
+        callback && callback();
         console.log('loaded', newScript.src);
     };
 }
@@ -220,27 +221,38 @@ class mnSdk {
     miniLogin(callback) {
         let game_config = this.getStorage('game_config');
         const handleTencentVideoPlatformLogin = () => {
-            window.bridgeHelper
-                .login('qq', {
-                    timeout: 10000, // 10s超时
-                })
-                .then(res => {
-                    window.bridgeHelper.getAuthCode({ appid: 'tiv64yv4308upa0urv' }).then(res => {
+            const handleLogin = () => {
+                window.bridgeHelper
+                    .login('qq', {
+                        timeout: 10000, // 10s超时
+                    })
+                    .then(res => {
+                        window.bridgeHelper
+                            .getAuthCode({ appid: 'tiv64yv4308upa0urv' })
+                            .then(res => {
+                                // console.log(res);
+                                let resInfo = {
+                                    ret: 1,
+                                    data: {
+                                        code: res.result.code,
+                                    },
+                                };
+                                callback && callback(resInfo);
+                            });
                         // console.log(res);
-
-                        let resInfo = {
-                            ret: 1,
-                            data: {
-                                code: res.result.code,
-                            },
-                        };
-                        callback && callback(resInfo);
-                    });
-                    // console.log(res);
-                })
-                .catch(err => {
-                    console.error(err);
-                }); // 登录qq
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    }); // 登录qq
+            };
+            if (window.bridgeHelper) {
+                handleLogin();
+            } else {
+                loadScript(
+                    '//vm.gtimg.cn/tencentvideo/script/video-interact/bridge-helper.min.js',
+                    handleLogin
+                );
+            }
         };
         const handleUndefinedPlatformLogin = () => {
             if (this.isQQ) {
@@ -382,12 +394,11 @@ class mnSdk {
                 amount: obj.amount,
                 extra_data: obj.extra_data,
                 callback_url: obj.callback_url,
-            };  
+            };
         } catch (error) {
             console.log(error);
-            
         }
- 
+
         console.log('order_data');
         console.log(order_data);
         console.log(4);
