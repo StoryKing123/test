@@ -318,7 +318,6 @@ class mnSdk {
                     }
                 })
 
-                
                 .catch(err => {
                     let errInfo = {
                         ret: 0,
@@ -362,6 +361,11 @@ class mnSdk {
         let login_rsp = _this.getStorage('login_rsp');
         let game_config = _this.getStorage('game_config');
         console.log(3);
+        console.log('------');
+        console.log(login_rsp);
+        console.log(game_config);
+        console.log(public_data);
+        console.log('------');
         let order_data = {
             user_id: login_rsp.user_id || '',
             game_role_id: obj.game_role_id,
