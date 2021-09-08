@@ -238,11 +238,14 @@ class mnSdk {
                                     },
                                 };
                                 callback && callback(resInfo);
+                            })
+                            .catch(err => {
+                                console.log(err);
                             });
                         // console.log(res);
                     })
                     .catch(err => {
-                        console.error(err);
+                        console.log(err);
                     }); // 登录qq
             };
             if (window.bridgeHelper) {
