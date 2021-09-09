@@ -307,7 +307,6 @@ class mnSdk {
             [TYPE_TENCENT_VIDEO]: handleTencentVideoPlatformLogin,
             [TYPE_UNDEFINED]: handleUndefinedPlatformLogin,
         };
-        console.log(game_config);
         platFormLoginMap[game_config.platform_type]();
     }
 
@@ -394,8 +393,6 @@ class mnSdk {
         let signStr = _this.createSign(public_data) + _this.game_key;
         public_data['sign'] = md5(signStr);
         let send_order_api = _this.domain + _this.order_api;
-
-        console.log(public_data);
         _this.request({
             method: 'POST',
             url: send_order_api,
@@ -443,6 +440,7 @@ class mnSdk {
         let public_data = _this.getPubData();
         let login_rsp = _this.getStorage('login_rsp');
         let game_config = _this.getStorage('game_config');
+        console.log(obj);
         let channel_order_data = {
             user_id: login_rsp.user_id || '',
             game_role_id: obj.game_role_id,
