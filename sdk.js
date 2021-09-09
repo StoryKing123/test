@@ -458,12 +458,6 @@ class mnSdk {
         let signStr = _this.createSign(public_data) + _this.game_key;
         public_data['sign'] = md5(signStr);
         let send_channel_order_api = _this.domain + _this.channel_order_api;
-
-        console.log('params');
-        console.log(content);
-        console.log(obj);
-        console.log(public_data);
-        console.log('--------------');
         _this.request({
             method: 'POST',
             url: send_channel_order_api,
@@ -493,10 +487,11 @@ class mnSdk {
     }
 
     miniPay(content, obj, callback) {
+        let game_config = this.getStorage('game_config');
         const handleTencentVideoPlatFormMiniPay = () => {
             bridgeHelper
                 .SingleCashier({
-                    items: `${obj.goods_id}:${obj.amount}`,
+                    items: `${obj.goods_id}:1`,
                     remark: '', // 透传后端返回的 pay_remark 字段即可
                     title: '6元限时礼包',
                     desc: '6元限时礼包',
@@ -559,6 +554,7 @@ class mnSdk {
             [TYPE_TENCENT_VIDEO]: handleTencentVideoPlatFormMiniPay,
             [TYPE_UNDEFINED]: handleUndefinedPlatFormMiniPay,
         };
+        platFormMiniPayMap[game_config.platform_type]()
     }
 
     miniShare(items, callback) {
