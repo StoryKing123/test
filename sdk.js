@@ -492,7 +492,7 @@ class mnSdk {
             bridgeHelper
                 .SingleCashier({
                     items: `${obj.goods_id}:1`,
-                    remark: '', // 透传后端返回的 pay_remark 字段即可
+                    remark: content.pay_remark, // 透传后端返回的 pay_remark 字段即可
                     title: '6元限时礼包',
                     desc: '6元限时礼包',
                     itemName: '6元限时礼包',
