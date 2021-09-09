@@ -440,7 +440,6 @@ class mnSdk {
         let public_data = _this.getPubData();
         let login_rsp = _this.getStorage('login_rsp');
         let game_config = _this.getStorage('game_config');
-        console.log(obj);
         let channel_order_data = {
             user_id: login_rsp.user_id || '',
             game_role_id: obj.game_role_id,
@@ -460,6 +459,11 @@ class mnSdk {
         public_data['sign'] = md5(signStr);
         let send_channel_order_api = _this.domain + _this.channel_order_api;
 
+        console.log('params');
+        console.log(content);
+        console.log(obj);
+        console.log(public_data);
+        console.log('--------------');
         _this.request({
             method: 'POST',
             url: send_channel_order_api,
